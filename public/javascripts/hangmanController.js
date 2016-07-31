@@ -67,6 +67,12 @@ app.controller('hangmanController',
 		function resetGame () {
 			$scope.greeting = "Let's Play Hangman.";
 	    	$scope.randomWord = randomWordService.getRandomWord();
+            //randomWordService is an object. getRandomWord is a property of that object
+            //that happens to be a function. It returns an object. That object has a property: then
+            randomWordService.getRandomWord().then(function(data){
+                console.log(data.data);
+            })
+
 	    	$scope.makeSpaces = setSpaces($scope.randomWord);
 	    	$scope.showRestart = false;
 	    	$scope.wrongLetters = [];

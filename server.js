@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -25,7 +25,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api);
+
+// redirects incorrect urls to index
+app.get('*', function(req, res){
+  res.redirect('/');
+})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
