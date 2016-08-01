@@ -38,7 +38,7 @@ Building this application has been a learning experience, and there is still pro
 
 ##Installation
 One can play the game [here](https://pilot-hangman-application.herokuapp.com/).
-Alternatively, one can clone the Master branch and run **nodemon bin/www** from the directory within your terminal.
+Alternatively, one can clone the Master branch and run **nodemon bin/www** from the directory within the terminal.
 
 ##Contributors
 This application was written by [Kira Pilot](https://www.linkedin.com/in/kira-pilot-30b4a173).
