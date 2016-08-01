@@ -4,6 +4,7 @@ app.directive('hgHangmanImage', [function() {
 		scope: {
 			incorrectCount: '@'
 		},
+		//Directive for displaying hangman image dynamically basis wrong guess count
 		link: function(scope, element, attrs, controllers){
     		var hangmanMapping = {
 	    		0: '',

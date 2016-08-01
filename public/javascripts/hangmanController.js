@@ -1,15 +1,18 @@
 app.controller('hangmanController',
 
     ['$scope', 'randomWordService', function($scope, randomWordService){
-    	
+
+        //Object that initializes guess and guessError as being blank and false
 		$scope.form={
     		guess: "",
     		guessError: false
     	};
 
+        //Initialization of resetGame, and hoisting of function that resets game
     	$scope.resetGame = resetGame;
     	$scope.resetGame();
 
+        //Function that sets spaces for the random word chosen by the randomWordService
     	function setSpaces(randomWord){
     		lengthOfWord =  randomWord.length;
     		setOfSpaces = "";
@@ -19,6 +22,8 @@ app.controller('hangmanController',
     		return setOfSpaces.trim();
     	}
 
+        //Function that checks user submission to ensure that user enters one character
+        //After submission, input box is cleared.
     	$scope.submit = function () {
     		if ($scope.form.guess.length != 1) {
     			$scope.form.guessError = true;
@@ -30,6 +35,7 @@ app.controller('hangmanController',
             $scope.form.guess="";
         }
 
+        //Function that checks if the user submission is in the random word 
         function yourGuess(bestGuess){
         	var wordArray = $scope.randomWord.split('');   
         	var spaceArray = $scope.makeSpaces.split(' ');
@@ -53,6 +59,7 @@ app.controller('hangmanController',
         	$scope.makeSpaces=spaceArray.join(' ');
         }
 
+        //Function that update the array wrong letters if the user guesses incorrectly
 		function wrongGuess(oops){
 			if ($scope.wrongLetters.indexOf(oops) == -1){
 				$scope.wrongLetters.push(oops);
@@ -64,6 +71,7 @@ app.controller('hangmanController',
 			}
 		}
 
+        //Function that resets the game
 		function resetGame () {
 			$scope.greeting = "Let's Play Hangman.";
 	    	$scope.randomWord = randomWordService.getRandomWord();

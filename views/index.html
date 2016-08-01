@@ -15,72 +15,83 @@
 
     <!-- fileblock:js appScripts -->
     <script src="javascripts/app.js"></script>
-    <script src="javascripts/bodyController.js"></script>
     <script src="javascripts/hangmanController.js"></script>
     <script src="javascripts/randomWordService.js"></script>
     <script src="javascripts/hgHangmanImageDirective.js"></script>
     <!-- endfileblock -->
 
     <!-- fileblock:css appStyles -->
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
     <!-- endfileblock -->
 
 </head>
-
-
 <body ng-controller="hangmanController" >
     <div class="container">
-
-        <h1>{{greeting}}</h1>
-
-        <p>{{makeSpaces}}</p>
-
-        <hg-hangman-image incorrect-count="{{wrongLetters.length}}"></hg-hangman-image>
-
-        <!-- form -->
-        <form class="form" ng-submit="submit()">
-            <div class="form-group" ng-class="{'has-error': form.guessError}">
-                Guess a letter! 
-                <br>
-                <div class="controls">
-                    <input type="text" class="form-control" name="letter" ng-model="form.guess"> 
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8 well" style="min-height:550px">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <h1>{{greeting}}</h1>   
+                        <p>{{makeSpaces}}</p>
+                    </div>
                 </div>
-                <br>
-                <button class="btn btn-default" type="submit">Submit!</button>
+                <div class="row text-center">
+                    <div class="col-md-12">  
+                        <div style="height:60px">
+                            <hg-hangman-image incorrect-count="{{wrongLetters.length}}"></hg-hangman-image>
+                        </div>
+                    </div>
+                </div>
+                <!--    form -->
+                <div class="row text-center">
+                    <div class="col-md-offset-3 col-md-6">
+                        <form class="form" ng-submit="submit()">
+                            <div class="form-group" ng-class="{'has-error': form.guessError}">
+                                <p>Guess a letter!</p>
+                                <br>
+                                <div class="controls">                                    
+                                    <input type="text" autocomplete="off" maxlength="1" class="form-control" name="letter" ng-model="form.guess"> 
+                                </div>
+                                <br>
+                                <button class="btn btn-default" type="submit">Submit!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--   form end -->
+                <!-- form validation -->
+                <div class="row text-center">
+                    <div class="col-md-offset-3 col-md-6">
+                        <div ng-if="wrongLetters.length!==0">
+                            <div>
+                                <p><h3>Incorrect Guesses</h3></p>
+                            </div>
+                            <div class="alert alert-danger">
+                                <p>{{wrongLetters.join(', ')}}</p>
+                            </div>
+                            <div ng-if="wrongLetters.length==5">
+                                <p><h4>Stop hanging me.</h4></p>
+                            </div>
+                        </div> 
+                         <div class="alert alert-danger" ng-if="form.guessError">
+                            <p>Please enter 1 letter.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- form validation end -->
+                <!-- reset game -->
+                <div class="row text-center">
+                    <div class="col-md-12">
+                         <form class="form-group" ng-if="showRestart">
+                            <button class="btn btn-default" ng-click="resetGame()">Play Again?</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- reset game end -->
             </div>
-        </form>
-        <!-- form end -->
-
-        <!-- form validation -->
-        <div ng-if="wrongLetters.length!==0">
-            <div>
-                <p><h3>Incorrect Guesses</h3></p>
-            </div>
-            <div class="alert alert-danger">
-                <p>{{wrongLetters.join(', ')}}</p>
-            </div>
-            <div ng-if="wrongLetters.length==5">
-                <p><h4>Stop hanging me.</h4></p>
-            </div>
-        </div> 
-        <div class="alert alert-danger" ng-if="form.guessError">
-            <p>Please enter 1 letter.</p>
         </div>
-        <!-- form validation end -->
-        
-
-
-        <form class="form-group" ng-if="showRestart">
-            <button class="btn btn-default" ng-click="resetGame()">Play Again?</button>
-        </form>
-
-
-        
-        
     </div>
-
-
-
 </body>
-
 </html>
