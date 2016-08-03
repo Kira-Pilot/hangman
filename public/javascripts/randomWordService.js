@@ -11,3 +11,5 @@ app.factory("randomWordService", ["$http", function($http){
         getRandomWord: getRandomWord 
     };
 }]);
+
+//If using an API, requests to the server would go in this service
