@@ -13,10 +13,9 @@ app.controller('hangmanController',
     	$scope.resetGame();
 
         //Function that sets spaces for the random word chosen by the randomWordService
-    	function setSpaces(randomWord){
-    		lengthOfWord =  randomWord.length;
+    	function setSpaces(){
     		setOfSpaces = "";
-    		for (i=0; i<lengthOfWord; i++){
+    		for (i=0; i<$scope.lengthOfWord; i++){
     			setOfSpaces+="_ ";
     		};
     		return setOfSpaces.trim();
@@ -29,10 +28,13 @@ app.controller('hangmanController',
     			$scope.form.guessError = true;
     		} else {
     			$scope.form.guessError = false;
-    			$scope.yourGuess=$scope.form.guess;
-    			yourGuess($scope.yourGuess);
+    			var yourGuessPromise = yourGuessService.bestGuess($scope.form.guess, $scope.randomId);
+                yourGuessPromise.success(function(data){
+                    $scope.hiddenArray = data.hiddenArray;
+                    yourGuess($scope.form.guess);
+                    $scope.form.guess="";
+                })	
     		}
-            $scope.form.guess="";
         }
 
         //Function that checks if the user submission is in the random word 
@@ -77,7 +79,10 @@ app.controller('hangmanController',
             var randomWordPromise = randomWordService.getRandomWord();
             randomWordPromise.success(function(data){
                 $scope.greeting = "Let's Play Hangman.";
-                $scope.randomWord = data.randomWord;
+                $scope.randomId = data.randomId;
+                $scope.lengthOfWord = data.randomLength;
+                console.log($scope.randomId);
+                console.log($scope.lengthOfWord);
                 $scope.makeSpaces = setSpaces($scope.randomWord);
                 $scope.showRestart = false;
                 $scope.wrongLetters = []; 
