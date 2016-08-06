@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -25,7 +25,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api);
+
+// redirects incorrect urls to index
+app.get('*', function(req, res){
+  res.redirect('/');
+})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,21 +42,21 @@ app.use(function(req, res, next) {
 
 // error handlers
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.send();
-  });
-}
+// // development error handler
+// // will print stacktrace
+// if (app.get('env') === 'development' || true) {
+//   app.use(function(err, req, res, next) {
+//     res.status(err.status || 500);
+//     res.send();
+//   });
+// }
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.send();
-});
+// // production error handler
+// // no stacktraces leaked to user
+// app.use(function(err, req, res, next) {
+//   res.status(err.status || 500);
+//   res.send();
+// });
 
 
 module.exports = app;
