@@ -1,6 +1,6 @@
 app.controller('hangmanController',
 
-    ['$scope', 'randomWordService', function($scope, randomWordService){
+    ['$scope', 'randomWordService', 'yourGuessService', function($scope, randomWordService, yourGuessService){
 
         //Object that initializes guess and guessError as being blank and false
 		$scope.form={
@@ -15,7 +15,7 @@ app.controller('hangmanController',
         //Function that sets spaces for the random word chosen by the randomWordService
     	function setSpaces(){
     		setOfSpaces = "";
-    		for (i=0; i<$scope.lengthOfWord; i++){
+    		for (i=0; i < $scope.lengthOfWord; i++){
     			setOfSpaces+="_ ";
     		};
     		return setOfSpaces.trim();
@@ -31,37 +31,36 @@ app.controller('hangmanController',
     			var yourGuessPromise = yourGuessService.bestGuess($scope.form.guess, $scope.randomId);
                 yourGuessPromise.success(function(data){
                     $scope.hiddenArray = data.hiddenArray;
+                    $scope.correct = data.correct;
                     yourGuess($scope.form.guess);
                     $scope.form.guess="";
                 })	
     		}
         }
 
-        //Function that checks if the user submission is in the random word 
+        //function that updates the string 'makeSpaces' with correct guesses
         function yourGuess(bestGuess){
-        	var wordArray = $scope.randomWord.split('');   
-        	var spaceArray = $scope.makeSpaces.split(' ');
-
-        	for (i = 0; i < wordArray.length; i++){       		
-        		var myLetter = wordArray[i];
-        		if (myLetter == $scope.yourGuess){
-        			spaceArray[i] = $scope.yourGuess;
-        		} 
-        	}	
-
-        	if (wordArray.join() == spaceArray.join()){
-        		$scope.showRestart = true;
-        		$scope.greeting = "You won!";
-        	}
-
-    		if (wordArray.indexOf($scope.yourGuess) == -1){
-    			var oops = $scope.yourGuess;
-    			wrongGuess(oops);
-    		}
-        	$scope.makeSpaces=spaceArray.join(' ');
+            var spaceArray = $scope.makeSpaces.split(' ');
+            if ($scope.correct == true){
+                for (i = 0; i < $scope.lengthOfWord; i++){
+                    console.log($scope.hiddenArray[i]);
+                    if($scope.hiddenArray[i] !== 0){
+                        spaceArray[i] = $scope.hiddenArray[i];
+                    }
+                }
+            } 
+            else {
+                wrongGuess(bestGuess);
+            }
+            if (spaceArray.indexOf('_') == -1){
+                $scope.greeting = "You won!";
+                $scope.showRestart = true;               
+            } 
+            $scope.makeSpaces=spaceArray.join(' ');
         }
 
-        //Function that update the array wrong letters if the user guesses incorrectly
+
+        //Function that update the array of wrong letters if the user guesses incorrectly
 		function wrongGuess(oops){
 			if ($scope.wrongLetters.indexOf(oops) == -1){
 				$scope.wrongLetters.push(oops);
@@ -81,9 +80,7 @@ app.controller('hangmanController',
                 $scope.greeting = "Let's Play Hangman.";
                 $scope.randomId = data.randomId;
                 $scope.lengthOfWord = data.randomLength;
-                console.log($scope.randomId);
-                console.log($scope.lengthOfWord);
-                $scope.makeSpaces = setSpaces($scope.randomWord);
+                $scope.makeSpaces = setSpaces($scope.lengthOfWord);
                 $scope.showRestart = false;
                 $scope.wrongLetters = []; 
             })	

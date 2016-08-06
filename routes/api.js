@@ -20,20 +20,24 @@ module.exports = router;
 
 /* POST user guess. */
 router.post('/letter/guess', function(req, res, next) {
-	var randomId =  req.body.randomId;
-	var yourGuess = req.body.yourGuess;
-	console.log(randomId);
-	console.log(yourGuess);
+	var randomId =  req.body.wordId;
+	var yourGuess = req.body.guessedLetter;
+	var correct = false;
 	var letterArray = wordArray[randomId].split('');
-	var hiddenArray = letterArray.fill(0);	
+	var letterArrayCopy = letterArray.slice();
+	var hiddenArray = letterArrayCopy.fill(0);
 	for (i=0; i<letterArray.length; i++){
 		var myLetter = letterArray[i];
+		console.log(myLetter);
 		if (myLetter == yourGuess){
 			hiddenArray[i] = yourGuess;
+			correct = true;
 		}
 	}
+	console.log(hiddenArray);
 	res.send({
-		hiddenArray: hiddenArray
+		hiddenArray: hiddenArray,
+		correct: correct
 	});
 });
 
