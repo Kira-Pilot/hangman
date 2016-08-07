@@ -22,7 +22,7 @@ app.controller('hangmanController',
     	}
 
         //Function that checks user submission to ensure that user enters one character
-        //After submission, input box is cleared.
+        //After submission, input box is cleared
     	$scope.submit = function () {
     		if ($scope.form.guess.length != 1) {
     			$scope.form.guessError = true;
@@ -38,19 +38,18 @@ app.controller('hangmanController',
     		}
         }
 
-        //function that updates the string 'makeSpaces' with correct guesses
-        function yourGuess(bestGuess){
+        //Function that updates the string 'makeSpaces' with correct guesses
+        function yourGuess(){
             var spaceArray = $scope.makeSpaces.split(' ');
-            if ($scope.correct == true){
+            if ($scope.correct){
                 for (i = 0; i < $scope.lengthOfWord; i++){
-                    console.log($scope.hiddenArray[i]);
                     if($scope.hiddenArray[i] !== 0){
                         spaceArray[i] = $scope.hiddenArray[i];
                     }
                 }
             } 
             else {
-                wrongGuess(bestGuess);
+                wrongGuess($scope.form.guess);
             }
             if (spaceArray.indexOf('_') == -1){
                 $scope.greeting = "You won!";
@@ -60,10 +59,10 @@ app.controller('hangmanController',
         }
 
 
-        //Function that update the array of wrong letters if the user guesses incorrectly
-		function wrongGuess(oops){
-			if ($scope.wrongLetters.indexOf(oops) == -1){
-				$scope.wrongLetters.push(oops);
+        //Function that updates the array of wrong letters if the user guesses incorrectly
+		function wrongGuess(){
+			if ($scope.wrongLetters.indexOf($scope.form.guess) == -1){
+				$scope.wrongLetters.push($scope.form.guess);
 		
     			if ($scope.wrongLetters.length == 10){
     				$scope.showRestart = true;
@@ -74,7 +73,6 @@ app.controller('hangmanController',
 
         //Function that resets the game
 		function resetGame () {
-            var randomWord = "";
             var randomWordPromise = randomWordService.getRandomWord();
             randomWordPromise.success(function(data){
                 $scope.greeting = "Let's Play Hangman.";

@@ -28,7 +28,7 @@ has won the game.
 * Game must scale to millions of users
 
 ##Next Steps
-Building this application has been a learning experience, and there is still progress to be made to complete the project in full. By way of example, one of the technology requirements was to implement business logic server-side, and this condition is still being realized (see the _backend_routing_ branch). Other work to be done includes:
+Building this application has been a learning experience, and there is still progress to be made to complete the project in full. Other work to be done includes:
 * Allow for simple statistics (games won/lost): 
  * This will be achieved through local storage (rather than through the use of database).
 * Game is self-contained: 

@@ -23,7 +23,7 @@ app.directive('hgHangmanImage', [function() {
 	    	
 	    	scope.hangmanSrc = hangmanMapping[scope.incorrectCount]
 
-	    	//hook for the digest loop
+	    	//Hook for the digest loop
 	    	scope.$watch(
 	    		function (scope) {
 	    			return scope.incorrectCount

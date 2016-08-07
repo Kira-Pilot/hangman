@@ -1,6 +1,6 @@
 app.factory("randomWordService", ["$http", function($http){
     
-    //here's an anonymous function that randomizes words pulled from the word bank.
+    //Anonymous function that returns JSON with random word ID and length
     var getRandomWord = function(){
         var ajaxPromise = $http.get('/api/word/random');
         return ajaxPromise;
